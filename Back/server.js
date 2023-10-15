@@ -27,7 +27,7 @@ const port = process.env.PORT;
 
 //Declare the dist directory as our static dir, and host it. Anything that hits
 //the / endpoint will get the dist dir back
-const publicPath = path.join(__dirname, '../Public');
+const publicPath = path.join(__dirname, '../Front');
 app.use(express.static(publicPath));
 
 
