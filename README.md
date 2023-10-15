@@ -1,15 +1,10 @@
-# 🚀 Welcome to your new awesome project!
+# Internet Programming Project
 
 This project has been created using **webpack-cli**, you can now run
 
+To compile:
 ```
+
 npm run build
 ```
 
-or
-
-```
-yarn build
-```
-
-to bundle your application
