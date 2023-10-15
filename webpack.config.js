@@ -10,9 +10,9 @@ const stylesHandler = 'style-loader';
 
 
 const config = {
-    entry: './src/index.ts',
+    entry: './Front/src/index.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'Public'),
     },
     devServer: {
         open: true,
