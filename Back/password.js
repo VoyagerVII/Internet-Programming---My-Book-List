@@ -11,6 +11,8 @@
 //----------------------------------
 // 
 //@source https://www.npmjs.com/package/bcrypt
+//NOTE::The fucntions are async as hashing can take a fair amount of time.
+//The server should remain responsive while calculating hashes.
 //Imports
 const bcrypt = require('bcrypt');
 const SALTROUNDS = 10;
