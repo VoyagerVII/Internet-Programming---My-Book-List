@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book List - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffedba;
+        }
+
+        header {
+            background-color: #C7AE6E;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .heading h4 {
+            color: white;
+            margin: 0;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover,
+        .nav-links .active {
+            background-color: #4caf50;
+        }
+
+        .menu-options {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            gap: 20px;
+            background-color: rgb(59, 124, 70);
+            padding: 10px;
+        }
+
+        .menu-options a {
+            color: whitesmoke;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .menu-options a:hover {
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome back, $username.</h1>
+        <nav>
+            <div class="heading">
+                <h4>MyBookList</h4>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./contact.html">My Books</a></li>
+                <li><a class="active" href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <ul class="menu-options">
+        <li><a href="#">Reading Now</a></li>
+        <li><a href="#">Bookshelves</a></li>
+        <li><a href="#">Search</a></li>
+    </ul>
+</body>
+
+</html>
