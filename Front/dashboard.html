@@ -24,6 +24,8 @@
 
         header h1 {
             margin: 0;
+            color: #000;
+            font-size: x-large;
         }
 
         .heading h4 {
@@ -95,6 +97,69 @@
         <li><a href="#">Add Bookshelf</a></li>
         <li><a href="#">Search</a></li>
     </ul>
+
+    <div id="search-section">
+        <input type="text" id="bookSearch" placeholder="Search for a book...">
+        <button onclick="searchBook()">Search</button>
+    </div>
+    <div id="results"></div>
+    
+    <script>
+        function searchBook() {
+            const query = document.getElementById('bookSearch').value;
+            const API_KEY = 'AIzaSyBASUxdn6U-raB77D5B5cp4KH5y90VIAMU'; // Replace with your Google Books API Key
+            const endpoint = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`;
+    
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching data:', err);
+                });
+        }
+    
+    function displayResults(data) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ''; // clear previous results
+
+    data.items.forEach(item => {
+        const bookTitle = item.volumeInfo.title;
+        const bookAuthors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
+        
+        // Get book cover image
+        const bookCover = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'path_to_default_image.jpg';
+
+        // Get ISBN
+        let isbn13 = "N/A";
+        if (item.volumeInfo.industryIdentifiers) {
+            for (let identifier of item.volumeInfo.industryIdentifiers) {
+                if (identifier.type === 'ISBN_13') {
+                    isbn13 = identifier.identifier;
+                    break;
+                }
+            }
+        }
+
+        // Get preview link
+        const previewLink = item.volumeInfo.previewLink;
+
+        resultsDiv.innerHTML += `<div>
+                                    <img src="${bookCover}" alt="${bookTitle} cover" width="100">
+                                    <h3>${bookTitle}</h3>
+                                    <p>${bookAuthors}</p>
+                                    <p>ISBN-13: ${isbn13}</p>
+                                    <a href="${previewLink}" target="_blank">Preview Book</a>
+                                 </div>`;
+    });
+}
+
+
+    </script>
+    
+
+
 </body>
 
 </html>
