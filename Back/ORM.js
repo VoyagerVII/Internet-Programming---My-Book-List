@@ -12,6 +12,7 @@
 //Imports
 const sqlite3 = require('sqlite3');
 const dotenv = require('dotenv');
+const { readlink } = require('fs');
 dotenv.config();
 
 class ORM {
@@ -42,27 +43,20 @@ class ORM {
         CREATE TABLE FriendCodes (
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             UserID INTEGER NOT NULL,
-            FriendCode varchar(60) NOT NULL,
-            
-            FOREIGN KEY(UserID) REFERENCES User(ID)
+            FriendCode varchar(60) NOT NULL
             );
         
         CREATE TABLE BookList (
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             BookListName varchar(30) NOT NULL,
-            UserID INTEGER NOT NULL,
-            
-            FOREIGN KEY(UserID) REFERENCES User(ID)
+            UserID varchar(60) NOT NULL
         );
         
         CREATE TABLE Books (
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             ISBN varchar(10) NOT NULL,
-            UserID INTEGER NOT NULL,
-            bookListID INT NOT NULL,
-            
-            FOREIGN KEY(UserID) REFERENCES User(ID),
-            FOREIGN KEY(bookListID) REFERENCES BookList(ID)
+            UserID varchar(60) NOT NULL,
+            bookListID INT NOT NULL
         ); `);
     }
 
@@ -154,6 +148,61 @@ class ORM {
             )
         });
     }
+
+    /**
+     * Queries a user from the DB from a userCode
+     * @param {string} userCode The userCode of the user to get.
+     * @returns A user object (ID, BookListName, UserID)
+     */
+    getDistinctBookListByUser(userCode) {
+        return new Promise((resolve, reject) => {
+            this.conn.all(`
+            SELECT DISTINCT * FROM BookList
+            WHERE UserID = ?`, 
+                userCode, 
+                (err, rows) => {
+                    if(err) {
+                        console.err(err.message);
+                        reject('err.message');
+                    }
+                    else if (rows.length <= 0) {
+                        return resolve(null);
+                    }
+                    else return resolve(rows);
+                }
+            )
+        });
+    }
+
+
+    /**
+     * Queries all the books in a booklist
+     * @param {string} userCode The userCode of the user to get the booklist from.
+     * @param {string} bookListID The bookListID the books are in.
+     * @returns A collection of book objects (ID, ISBN, UserID, bookListID)
+     */
+    getBooks(userCode, bookListID) {
+        return new Promise((resolve, reject) => {
+            this.conn.all(`
+            SELECT * FROM Books
+            WHERE UserID = ? AND bookListID = ?`, 
+                [userCode, bookListID], 
+                (err, rows) => {
+                    if(err) {
+                        console.err(err.message);
+                        reject('err.message');
+                    }
+                    else if (rows.length <= 0) {
+                        return resolve(null);
+                    }
+                    else return resolve(rows);
+                }
+            )
+        });
+    }
+
+
+
     
 
 
@@ -166,15 +215,20 @@ class ORM {
      */
     insertNewUser(username, hash, usercode) {
         return new Promise((resolve, reject) => {
-            this.conn.run(`
-            INSERT INTO User (username, hash, usercode)
-            VALUES (?, ?, ?)
-            `,
-            [username, hash, usercode],
-            () => {
-                resolve();
+            try{
+                this.conn.run(`
+                    INSERT INTO User (username, hash, usercode)
+                    VALUES (?, ?, ?)
+                    `,
+                    [username, hash, usercode],
+                    () => {
+                        resolve(usercode);
+                    }
+                );
             }
-        );
+            catch(err) {
+                reject(null);
+            }
         });
     }
 
@@ -188,16 +242,127 @@ class ORM {
     insertNewFriendCode(userID, friendCode) {
         return new Promise((resolve, reject) => {
             this.conn.run(`
-            INSERT INTO FriendCodes (UserID, FriendCode)
-            VALUES (?, ?)
-            `,
-            [userID, friendCode],
-            () => {
-                resolve();
-            }
-        );
-         });
+                INSERT INTO FriendCodes (UserID, FriendCode)
+                VALUES (?, ?)
+                `,
+                [userID, friendCode],
+                () => {
+                    resolve();
+                }
+            );
+        });
     }
+
+    
+    /**
+     * Inserts a new BookList into the BookList table.
+     * @param {string} bookListName The name of the Booklist
+     * @param {string} userID The ID of the user in the user table 
+     * @returns {Promise} A promise that resolves to the last ID entered
+     */
+    insertNewBookList(bookListName, userID) {
+        return new Promise((resolve, reject) => {
+                this.conn.run(`
+                INSERT INTO BookList (BookListName, userID)
+                VALUES (?, ?)
+                `,
+                [bookListName, userID],
+                function() {
+                    resolve(this.lastID);
+                }
+            );
+        });
+    }
+
+
+    /**
+     * Inserts a new BookList into the BookList table.
+     * @param {string} BookListID The ID of the Booklist
+     * @param {string} userID The ID of the user in the user table 
+     * @returns null
+     */
+    deleteBookList(BookListID, userID) {
+        return new Promise((resolve, reject) => {
+                this.conn.run(`
+                DELETE FROM BookList
+                WHERE ID = ? AND UserID = ?
+                `,
+                [BookListID, userID],
+                () => {
+                    resolve();
+                }
+            );
+        });
+    }
+
+
+    
+    /**
+     * Deletes every book from a bookList
+     * @param {string} BookListID The ID of the Booklist
+     * @param {string} userID The ID of the user in the user table 
+     * @returns null
+     */
+    deleteAllBooksFromBookList(BookListID, userID) {
+        return new Promise((resolve, reject) => {
+                this.conn.run(`
+                DELETE FROM Books
+                WHERE BookListID = ? AND UserID = ?
+                `,
+                [BookListID, userID],
+                () => {
+                    resolve();
+                }
+            );
+        });
+    }
+
+
+    /**
+     * Inserts a new book into the book table.
+     * @param {string} ISBN The ISBN of the book
+     * @param {string} userID The ID of the user in the user table 
+     * @param {string} bookListID The ID of the booklist
+     * @returns null
+     */
+    insertNewBook(ISBN, userID, bookListID) {
+        return new Promise((resolve, reject) => {
+                this.conn.run(`
+                INSERT INTO Books (ISBN, UserID, bookListID) 
+                VALUES(?, ?, ?)
+                `,
+                [ISBN, userID, bookListID],
+                (err) => 
+                {
+                    resolve();
+                }
+            );
+        });
+    }
+
+    /**
+     * Deletes a Book from the Book table.
+     * @param {string} ISBN The ISBN of the book
+     * @param {string} userID The ID of the user in the user table 
+     * @param {string} bookListID The ID of the booklist
+     * @returns null
+     */
+    deleteBook(ISBN, userID, bookListID) {
+        return new Promise((resolve, reject) => {
+                this.conn.run(`
+                DELETE FROM Books 
+                WHERE ISBN= ? AND UserID = ? AND bookListID = ?
+                `,
+                [ISBN, userID, bookListID],
+                () => {
+                    resolve();
+                }
+            );
+        });
+    }
+
+    
+    
 
 
 
