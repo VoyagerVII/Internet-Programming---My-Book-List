@@ -25,18 +25,51 @@ class APIHandler {
         let responseObj = {
             'result': null
         };
+
+        try{
         
-        let result = null;
-        switch(request.query.action) {
-            case 'qValidUser':
-                result = await this.ValidateUser(request.query.username, request.query.guess);
-                responseObj.result = result
-                break;
-            case 'pNewUser':
-                result = await this.AddNewUser(request.query.username, request.query.password)
-            default:
-                console.error(`Action received to API but not handed as was not understood. Action: ${request.query.action}`);
-                break;
+            let result = null;
+            switch(request.query.action) {
+                case 'qValidUser':
+                    result = await this.ValidateUser(request.query.username, request.query.guess);
+                    responseObj.result = result;
+                    break;
+                case 'qDistinctBookList':
+                    result = await this.orm.getDistinctBookListByUser(request.query.userID);
+                    responseObj.result = result;
+                    break;
+                case 'qBooks':
+                    result = await this.orm.getBooks(request.query.userID, request.query.bookListID);
+                    responseObj.result = result;
+                    break;
+                case 'pNewUser':
+                    result = await this.AddNewUser(request.query.username, request.query.password);
+                    responseObj.result = result;
+                    break;
+                case 'pNewBooklist':
+                    result = await this.orm.insertNewBookList(request.query.bookListName, request.query.userID);
+                    responseObj.result = result;
+                    break;
+                case 'pDeleteBookList':
+                    result = await this.DeleteBookList(request.query.userID, request.query.BookListID);
+                    break;
+                case 'pNewBook':
+                    result = await this.orm.insertNewBook(request.query.ISBN, request.query.userID, request.query.BookListID);
+                    break;
+                case 'pDeleteBook':
+                    result = await this.orm.deleteBook(request.query.ISBN, request.query.userID, request.query.BookListID);
+                    break;
+                default:
+                    let errStr = `Action received to API but not handled as was not understood. Action: ${request.query.action}`
+                    console.error(errStr);
+                    responseObj.result = errStr
+                    break;
+            }
+        }
+        catch (err) {
+            let errStr = `An error occurred in the API but was not handled. Error: ${err}`
+            console.error(errStr);
+            responseObj.result = errStr
         }
 
         callback(responseObj);
@@ -119,6 +152,17 @@ class APIHandler {
 
         //Add the new users friend code
         await this.orm.insertNewFriendCode(user.ID, friendCode);
+        return userCode;
+    }
+
+    /**
+     * Deletes a booklist and all the books that were in it.
+     * @param {string} userID The ID of the user
+     * @param {string} bookListID The ID of the booklist
+     */
+    async DeleteBookList(userID, bookListID) {
+        await this.orm.deleteAllBooksFromBookList(bookListID, userID);
+        await this.orm.deleteBookList(bookListID, userID);
     }
 }
 
