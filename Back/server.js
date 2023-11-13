@@ -15,6 +15,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path'); 
+const APIHandler = require('./APIHandler.js')
+const ORM = require('./ORM.js');
 
 //Load in .env file.
 dotenv.config();
@@ -30,12 +32,16 @@ const port = process.env.PORT;
 const publicPath = path.join(__dirname, '../Front');
 app.use(express.static(publicPath));
 
+const orm = new ORM();
+orm.CreateDB();
+const apiHandler = new APIHandler();
 
-
-//THis is an example of a get request
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, '/dist/index.html'));
-// });
+app.get('/api', (req, res) => {
+  apiHandler.HandleGetRequest(req, (responseOBj) => {
+    res.send(JSON.stringify(responseOBj));
+  })
+  
+});
 
 //Start are server on the port we selected.
 app.listen(port, () => {
