@@ -73,6 +73,21 @@
         .menu-options a:hover {
             background-color: #4caf50;
         }
+
+        #results {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Creates 5 columns */
+    gap: 20px; /* Space between grid items */
+    padding: 20px;
+}
+
+.book-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
     </style>
 </head>
 
@@ -105,26 +120,30 @@
     <div id="results"></div>
     
     <script>
-        function searchBook() {
-            const query = document.getElementById('bookSearch').value;
-            const API_KEY = 'AIzaSyBASUxdn6U-raB77D5B5cp4KH5y90VIAMU'; // Replace with your Google Books API Key
-            const endpoint = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`;
-    
-            fetch(endpoint)
-                .then(response => response.json())
-                .then(data => {
-                    displayResults(data);
-                })
-                .catch(err => {
-                    console.error('Error fetching data:', err);
-                });
-        }
-    
-    function displayResults(data) {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = ''; // clear previous results
+    let userBookshelf = []; // Global variable to store bookshelf data
+    let searchResults = []; // Global variable to store search results
 
-    data.items.forEach(item => {
+function searchBook() {
+    const query = document.getElementById('bookSearch').value;
+    const API_KEY = 'AIzaSyBASUxdn6U-raB77D5B5cp4KH5y90VIAMU'; // Replace with your Google Books API Key
+    const endpoint = `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`;
+
+    fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+            searchResults = data.items; // Store the search results in the global variable
+            displayResults(data);
+        })
+        .catch(err => {
+            console.error('Error fetching data:', err);
+        });
+}
+
+function displayResults(data) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ''; // Clear previous results
+
+    data.items.forEach((item, index) => {
         const bookTitle = item.volumeInfo.title;
         const bookAuthors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
         
@@ -132,11 +151,11 @@
         const bookCover = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'path_to_default_image.jpg';
 
         // Get ISBN
-        let isbn13 = "N/A";
+        let isbn10 = "N/A";
         if (item.volumeInfo.industryIdentifiers) {
             for (let identifier of item.volumeInfo.industryIdentifiers) {
-                if (identifier.type === 'ISBN_13') {
-                    isbn13 = identifier.identifier;
+                if (identifier.type === 'ISBN_10') {
+                    isbn10 = identifier.identifier;
                     break;
                 }
             }
@@ -145,15 +164,36 @@
         // Get preview link
         const previewLink = item.volumeInfo.previewLink;
 
-        resultsDiv.innerHTML += `<div>
+        resultsDiv.innerHTML += `<div class="book-item">
                                     <img src="${bookCover}" alt="${bookTitle} cover" width="100">
                                     <h3>${bookTitle}</h3>
                                     <p>${bookAuthors}</p>
-                                    <p>ISBN-13: ${isbn13}</p>
+                                    <p>ISBN-10: ${isbn10}</p>
                                     <a href="${previewLink}" target="_blank">Preview Book</a>
+                                    <button onclick="addToBookshelf(${index})">Add to Bookshelf</button>
                                  </div>`;
     });
 }
+
+function addToBookshelf(index) {
+    const bookToAdd = searchResults[index]; // Use the global searchResults array
+    userBookshelf.push(bookToAdd); // Add the selected book to the bookshelf
+    updateBookshelfDisplay(); // Update the bookshelf display
+}
+
+function updateBookshelfDisplay() {
+    const bookshelfDiv = document.getElementById('bookshelf');
+    bookshelfDiv.innerHTML = ''; // Clear previous bookshelf display
+
+    userBookshelf.forEach((book, index) => {
+        const bookTitle = book.volumeInfo.title;
+        const bookCover = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'path_to_default_image.jpg';
+
+        bookshelfDiv.innerHTML += `<div class="book-item">
+                                       <img src="${bookCover}" alt="${bookTitle} cover" width="100">
+                                       <h3>${bookTitle}</h3>
+                                   </div>`;
+    })};
 
 
     </script>
