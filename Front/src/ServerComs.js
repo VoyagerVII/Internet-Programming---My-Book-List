@@ -122,5 +122,40 @@ export async function DeleteBook(userID, BookListID, ISBN) {
 }
 
 
-test();
+/**
+ * Asks the server for all the booklists for the user from their friend code.
+ * @param {string} friendCode The friendCode to fetch the booklists for.
+ * @returns {object[]} A collection of booklists for the user.
+ */
+export async function FriendFetchUserBookLists(friendCode) {
+    const response = await fetch(`${ServerAddress}/api?action=qFriendDistinctBookList&friendCode=${friendCode}`)
+    const resultJSON = await response.json();
+    return resultJSON.result;
+}
+
+/**
+ * This function asks the server for the books in a givin booklist for a givin user from their friend code.
+ * @param {string} friendCode The friendCode to fetch for.
+ * @param {string} BookListID The id of the booklist to get the books for.
+ * @returns {object} A collections of books in the booklist.
+ */
+export async function FriendFetchUserBookListBooks(friendCode, BookListID) {
+    const response = await fetch(`${ServerAddress}/api?action=qFriendBooks&bookListID=${BookListID}&friendCode=${friendCode}`)
+    const resultJSON = await response.json();
+    return resultJSON.result;
+}
+
+
+/**
+ * This function gets the friendCode of a user.
+ * @param {string} friendCode The friendCode to fetch for.
+ * @returns {object} A collections of books in the booklist.
+ */
+export async function FetchFriendCode(userID) {
+    const response = await fetch(`${ServerAddress}/api?action=qFriendCode&userID=${userID}`)
+    const resultJSON = await response.json();
+    return resultJSON.result;
+}
+
+
 

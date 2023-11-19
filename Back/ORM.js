@@ -42,7 +42,7 @@ class ORM {
         
         CREATE TABLE FriendCodes (
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            UserID INTEGER NOT NULL,
+            usercode varchar(60) NOT NULL,
             FriendCode varchar(60) NOT NULL
             );
         
@@ -101,6 +101,35 @@ class ORM {
                 SELECT * FROM FriendCodes 
                 WHERE FriendCode = ?`, 
                 friendCode, 
+                (err, rows) => {
+                    if(err) {
+                        console.err(err.message);
+                        reject('err.message');
+                    }
+                    else if ( rows.length > 1) { //More than one result
+                        console.err('Too many rows returned from FriendCodes table!');
+                        reject('Too many rows returned from FriendCodes table!');
+                    }
+                    else if (rows.length <= 0) { //No result
+                        return resolve(-1);
+                    }
+                    else return resolve(rows[0]); //One good result
+                }
+            )
+        });
+    }
+
+    /**
+     * Queries a friend code from a UserID
+     * @param {string} usercode The usercode of the row to get.
+     * @returns A user object (ID, UserID, FriendCode)
+     */
+    getFriendCode(usercode) {
+        return new Promise((resolve, reject) => {
+            this.conn.all(`
+                SELECT * FROM FriendCodes 
+                WHERE usercode = ?`, 
+                usercode, 
                 (err, rows) => {
                     if(err) {
                         console.err(err.message);
@@ -236,16 +265,17 @@ class ORM {
     /**
      * Inserts a new friend code into the friend code table.
      * @param {string} userID The ID of the user in the user table 
+     * @param {string} usercode The unique user code
      * @param {string} friendCode The unique friend code
      * @returns null
      */
-    insertNewFriendCode(userID, friendCode) {
+    insertNewFriendCode(usercode, friendCode) {
         return new Promise((resolve, reject) => {
             this.conn.run(`
-                INSERT INTO FriendCodes (UserID, FriendCode)
+                INSERT INTO FriendCodes (usercode, FriendCode)
                 VALUES (?, ?)
                 `,
-                [userID, friendCode],
+                [usercode, friendCode],
                 () => {
                     resolve();
                 }
