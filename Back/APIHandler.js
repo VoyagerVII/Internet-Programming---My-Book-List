@@ -59,6 +59,26 @@ class APIHandler {
                 case 'pDeleteBook':
                     result = await this.orm.deleteBook(request.query.ISBN, request.query.userID, request.query.BookListID);
                     break;
+                case 'qFriendDistinctBookList':
+                    var friend = await this.orm.getFriendByCode(request.query.friendCode);
+                    if(friend == -1) { break; } //No friend found with that code
+                    
+                    result = await this.orm.getDistinctBookListByUser(friend.usercode);
+                    responseObj.result = result;
+                    break;
+                case 'qFriendBooks':
+                    var friend = await this.orm.getFriendByCode(request.query.friendCode);
+                    if(friend == -1) { break; } //No friend found with that code
+
+                    result = await this.orm.getBooks(friend.usercode, request.query.bookListID);
+                    responseObj.result = result;
+                    break;
+                case 'qFriendCode':
+                    var friend = await this.orm.getFriendCode(request.query.userID);
+
+                    if(friend == -1) { break; } //No user found
+                    responseObj.result = friend.FriendCode;
+                    break;
                 default:
                     let errStr = `Action received to API but not handled as was not understood. Action: ${request.query.action}`
                     console.error(errStr);
@@ -151,7 +171,7 @@ class APIHandler {
         if(user == -1) { console.error('User not found after being inserted into DB!'); process.exit(1); }
 
         //Add the new users friend code
-        await this.orm.insertNewFriendCode(user.ID, friendCode);
+        await this.orm.insertNewFriendCode(userCode, friendCode);
         return userCode;
     }
 
