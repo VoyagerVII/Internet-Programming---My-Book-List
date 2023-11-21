@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="./styles/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
-    .container {
+        .container {
         max-height: 400px;
         max-width: 500px; /* Set the maximum width of the container */
         margin: 40px auto; /* Center the container */
@@ -16,7 +16,6 @@
     }
     </style>
     </head>
-
     <body>
         <nav>
             <div class="heading">
@@ -35,25 +34,39 @@
         </nav>
 
         <div class="container">
-        <div class="body-text" style="margin: auto;"><h1>Login</h1></div>
+        <div class="body-text" style="margin: auto;"><h1>Sign Up</h1></div>
         <br>
 
-        
         <form><center>
             <label for="usrname">Username:</label><br>
             <input type="text" id="usrname" name="usrname"><br>
             <label for="pass">Password:</label><br>
             <input type="text" id="pass" name="pass"><br>
+            <label for="pass2">Re-enter Password:</label><br>
+            <input type="text" id="pass2" name="pass2"><br><br>
+            
             </center>
         </form>
 
         <center>
+            <a><button class="button button2" >Confirm</button></a>
             <br>
-            <a><button type="submit" class="button button1">Confirm</button></a>
-            <br>
-            <a href="./signUp.html"><button class="button button2">Sign Up</button></a>
+            <a href="./login.html" ><button class="button button1">Login</button></a>
         </center>
         </div>
+
+        <script>
+           checkpass()
+           {
+
+
+           
+        
+        }
+
+
+        </script>
+        
     </body>
     
 </html>
