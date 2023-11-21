@@ -2,8 +2,15 @@
 
 
 ## To run the webserver
-You will need a .env file with the PORT= [Port number]
-```
-npm run server
-```
+### NPM
+Run `npm install` to get dependance
+### .env
+`PORT= [Port number]` 8000 recommended 
+
+`DB_PATH= [Absolute Path]` Ex: C:/DB/My-Book-List.db
+
+### Running server:
+`npm run server`
+
+
 
