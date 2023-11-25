@@ -32,7 +32,8 @@
     "wepack-cli": "^0.0.1-security"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "i": "^0.3.7",
     "sqlite3": "^5.1.6"
   }
-  
 }

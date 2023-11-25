@@ -17,12 +17,16 @@ const dotenv = require('dotenv');
 const path = require('path'); 
 const APIHandler = require('./APIHandler.js')
 const ORM = require('./ORM.js');
+const cors = require('cors');
 
 //Load in .env file.
 dotenv.config();
 
 //Construct a new webapp, this is our server
 const app = express();
+
+// Cross orgine handling
+app.use(cors())
 
 //Read in what port to use from the env
 const port = process.env.PORT;
