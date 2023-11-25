@@ -9,6 +9,10 @@ Run `npm install` to get dependance
 
 `DB_PATH= [Absolute Path]` Ex: C:/DB/My-Book-List.db
 
+
+### Creating DB:
+`npm run init`
+
 ### Running server:
 `npm run server`
 

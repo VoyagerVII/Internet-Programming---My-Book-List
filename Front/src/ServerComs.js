@@ -18,7 +18,7 @@ const ServerAddress = "http://localhost:8000"; //Hit loopback for testing
  * @param {string} passwordGuess The password. Must be less than 30 characters.
  * @returns {string | null} userId | null
  */
-export async function IsValidUser(username, passwordGuess) {
+async function IsValidUser(username, passwordGuess) {
 
     if(typeof(username) != 'string' || typeof(passwordGuess) != 'string') { 
         console.error('In IsValidUser call, password or username not string!'); 
@@ -39,7 +39,7 @@ export async function IsValidUser(username, passwordGuess) {
  * @param {string} username The username for the new user. Must be less than 30 characters.
  * @param {string} password The password for the new user. Must be less than 30 characters. 
  */
-export async function CreateNewUser(username, password) {
+async function CreateNewUser(username, password) {
     if(typeof(username) != 'string' || typeof(password) != 'string') { 
         console.error('In CreateNewUser call, password or username not string!'); 
         return null; 
@@ -59,7 +59,7 @@ export async function CreateNewUser(username, password) {
  * @param {string} userID The userID to fetch the booklists for.
  * @returns {object[]} A collection of booklists for the user.
  */
-export async function FetchUserBookLists(userID) {
+async function FetchUserBookLists(userID) {
     const response = await fetch(`${ServerAddress}/api?action=qDistinctBookList&userID=${userID}`)
     const resultJSON = await response.json();
     return resultJSON.result;
@@ -71,7 +71,7 @@ export async function FetchUserBookLists(userID) {
  * @param {string} BookListID The id of the booklist to get the books for.
  * @returns {object} A collections of books in the booklist.
  */
-export async function FetchUserBookListBooks(userID, BookListID) {
+async function FetchUserBookListBooks(userID, BookListID) {
     const response = await fetch(`${ServerAddress}/api?action=qBooks&bookListID=${BookListID}&userID=${userID}`)
     const resultJSON = await response.json();
     return resultJSON.result;
@@ -83,7 +83,7 @@ export async function FetchUserBookListBooks(userID, BookListID) {
  * @param {string} bookListName The name for the new booklist. Must be less than 30 characters.
  * @returns {string | null} The id of the new booklist | null
  */
-export async function CreateNewBookList(userID, bookListName){
+async function CreateNewBookList(userID, bookListName){
    
     const response = await fetch(`${ServerAddress}/api?action=pNewBooklist&bookListName=${bookListName}&userID=${userID}`)
     const resultJSON = await response.json();
@@ -95,7 +95,7 @@ export async function CreateNewBookList(userID, bookListName){
  * @param {string} userID The id of the user.
  * @param {string} BookListID The id of the booklist to delete.
  */
-export async function DeleteBookList(userID, BookListID) {
+async function DeleteBookList(userID, BookListID) {
     await fetch(`${ServerAddress}/api?action=pDeleteBookList&userID=${userID}&BookListID=${BookListID}`)
 }
 
@@ -106,7 +106,7 @@ export async function DeleteBookList(userID, BookListID) {
  * @param {int} ISBN The ISBN (10 digit ISBN)
  * @returns {boolean} If the operation was successful.
  */
-export async function AddBook(userID, BookListID, ISBN) {
+async function AddBook(userID, BookListID, ISBN) {
     await fetch(`${ServerAddress}/api?action=pNewBook&ISBN=${ISBN}&userID=${userID}&BookListID=${BookListID}`)
 }
 
@@ -117,7 +117,7 @@ export async function AddBook(userID, BookListID, ISBN) {
  * @param {int} ISBN The ISBN to remove (10 digit ISBN)
  * @returns {boolean} If the operation was successful
  */
-export async function DeleteBook(userID, BookListID, ISBN) { 
+async function DeleteBook(userID, BookListID, ISBN) { 
     await fetch(`${ServerAddress}/api?action=pDeleteBook&ISBN=${ISBN}&userID=${userID}&BookListID=${BookListID}`)
 }
 
@@ -127,7 +127,7 @@ export async function DeleteBook(userID, BookListID, ISBN) {
  * @param {string} friendCode The friendCode to fetch the booklists for.
  * @returns {object[]} A collection of booklists for the user.
  */
-export async function FriendFetchUserBookLists(friendCode) {
+async function FriendFetchUserBookLists(friendCode) {
     const response = await fetch(`${ServerAddress}/api?action=qFriendDistinctBookList&friendCode=${friendCode}`)
     const resultJSON = await response.json();
     return resultJSON.result;
@@ -139,7 +139,7 @@ export async function FriendFetchUserBookLists(friendCode) {
  * @param {string} BookListID The id of the booklist to get the books for.
  * @returns {object} A collections of books in the booklist.
  */
-export async function FriendFetchUserBookListBooks(friendCode, BookListID) {
+async function FriendFetchUserBookListBooks(friendCode, BookListID) {
     const response = await fetch(`${ServerAddress}/api?action=qFriendBooks&bookListID=${BookListID}&friendCode=${friendCode}`)
     const resultJSON = await response.json();
     return resultJSON.result;
@@ -151,7 +151,7 @@ export async function FriendFetchUserBookListBooks(friendCode, BookListID) {
  * @param {string} friendCode The friendCode to fetch for.
  * @returns {object} A collections of books in the booklist.
  */
-export async function FetchFriendCode(userID) {
+async function FetchFriendCode(userID) {
     const response = await fetch(`${ServerAddress}/api?action=qFriendCode&userID=${userID}`)
     const resultJSON = await response.json();
     return resultJSON.result;
@@ -159,3 +159,7 @@ export async function FetchFriendCode(userID) {
 
 
 
+async function test() {
+    console.log(await CreateNewUser('Test', 'test'));
+}
+test();
