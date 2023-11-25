@@ -3,18 +3,22 @@
     <head>
         <meta charset="utf-8" />
         <title>My Book List</title>
-	<link rel="stylesheet" href="./styles/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-    .container {
-        max-height: 400px;
-        max-width: 500px; /* Set the maximum width of the container */
-        margin: 40px auto; /* Center the container */
-        background-color: #fff; /* Set the background color of the container */
-        padding: 20px; /* Add padding to create space between the content and the container */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-    }
-    </style>
+        <script src="../Back/APIHandler.js" defer></script>
+	    <link rel="stylesheet" href="./styles/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+        .container {
+            max-height: 400px;
+            max-width: 500px; /* Set the maximum width of the container */
+            margin: 40px auto; /* Center the container */
+            background-color: #fff; /* Set the background color of the container */
+            padding: 20px; /* Add padding to create space between the content and the container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        }
+        .error {
+            color: red;
+        }
+        </style>
     </head>
 
     <body>
@@ -39,15 +43,20 @@
         <br>
 
         
-        <form>
+        <form id="loginForm" action="./myBooks.html" method="post" onsubmit="return validateForm()">
             <center>
             <label for="usrname">Username:</label><br>
-            <input type="text" id="usrname" name="usrname"><br>
+            <input type="text" id="usrname" name="usrname">
+            <div id="usernameError" class="error"></div>
+
             <label for="pass">Password:</label><br>
-            <input type="text" id="pass" name="pass"><br>
+            <input type="text" id="pass" name="pass">
+            <div id="passwordError" class="error"></div>
+            <div id="guessError" class="error"></div>
+
 
             <br>
-            <a><button type="submit" class="button button1">Confirm</button></a>
+            <button type="submit" class="button button1">Confirm</button>
             <br>
             </center>
         </form>
@@ -55,9 +64,41 @@
         <center>
             <a href="./signUp.html"><button class="button button2">Sign Up</button></a>
         </center>
-            
+        
+        <script>
+            function validateForm() 
+            {
+                // Get form inputs
+                var username = document.getElementById("usrname").value;
+                var password = document.getElementById("pass").value;
+                
+                // Reset previous error messages
+                document.getElementById("usernameError").innerHTML = "";
+                document.getElementById("passwordError").innerHTML = "";
+                document.getElementById("guessError").innerHTML = "";
 
+                // Validate username
+                if (username.trim() === "") {
+                document.getElementById("usernameError").innerHTML = "Username cannot be empty";
+                return false;
+                }
+
+                // Validate password
+                if (password.trim() === "") {
+                    document.getElementById("passwordError").innerHTML = "Password cannot be empty";
+                    return false;
+                }
+
+                // Call the User function with the username and password
+                if(ValidateUser(username, password)==null){
+                    document.getElementById("guessError").innerHTML = "!The email or Password is incorrect!";
+                    return false;
+                }
+                
+                // Form is valid
+                return true;  
+            }
+        </script>
         </div>
     </body>
-    
 </html>

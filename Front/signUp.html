@@ -15,6 +15,9 @@
             padding: 20px; /* Add padding to create space between the content and the container */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
             }
+            .error {
+            color: red;
+            }
         </style>
     </head>
     <body>
@@ -41,11 +44,17 @@
         <form id="signupForm" action="./myBooks.html" method="post" onsubmit="return validateForm()">
             <center>
             <label for="usrname">Username:</label><br>
-            <input type="text" id="usrname" name="usrname"><br>
+            <input type="text" id="usrname" name="usrname">
+            <div id="usernameError" class="error"></div>
+
             <label for="pass">Password:</label><br>
-            <input type="password" id="pass" name="pass"><br>
+            <input type="password" id="pass" name="pass">
+            <div id="passwordError" class="error"></div>
+
             <label for="pass2">Re-enter Password:</label><br>
-            <input type="password" id="pass2" name="pass2"><br><br>
+            <input type="password" id="pass2" name="pass2"><br>
+            <div id="password2Error" class="error"></div>
+
             <button type="submit" class="button button2" >Confirm</button>
             <br>
             </center>
@@ -58,8 +67,40 @@
         <script>
             function validateForm() 
             {
-                
-            }
+                // Get form inputs
+                var username = document.getElementById("usrname").value;
+                var password = document.getElementById("pass").value;
+                var password2 = document.getElementById("pass2").value;
+
+                // Reset previous error messages
+                document.getElementById("usernameError").innerHTML = "";
+                document.getElementById("passwordError").innerHTML = "";
+                document.getElementById("password2Error").innerHTML = "";
+
+                // Validate username
+                if (username.trim() === "") {
+                document.getElementById("usernameError").innerHTML = "Username cannot be empty";
+                return false;
+                }
+
+                // Validate password
+                if (password.trim() === "") {
+                    document.getElementById("passwordError").innerHTML = "Password cannot be empty";
+                    return false;
+                }
+
+                // Validate password confirmation
+                if (password !== password2) {
+                    document.getElementById("password2Error").innerHTML = "Passwords do not match";
+                    return false;
+                }
+
+                // Call the AddNewUser function with the username and password
+                AddNewUser(username, password);
+
+                // Form is valid
+                return true;  
+        }
         </script>
         </div>
         
