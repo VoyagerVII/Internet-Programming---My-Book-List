@@ -37,29 +37,30 @@
         <div class="body-text" style="margin: auto;"><h1>Sign Up</h1></div>
         <br>
 
-        <form><center>
+        <form id="signupForm" action="./myBooks.html" method="post" onsubmit="return validateForm()">
+            <center>
             <label for="usrname">Username:</label><br>
             <input type="text" id="usrname" name="usrname"><br>
             <label for="pass">Password:</label><br>
-            <input type="text" id="pass" name="pass"><br>
+            <input type="password" id="pass" name="pass"><br>
             <label for="pass2">Re-enter Password:</label><br>
-            <input type="text" id="pass2" name="pass2"><br><br>
-            
+            <input type="password" id="pass2" name="pass2"><br><br>
+            <button type="submit" class="button button2" >Confirm</button>
+            <br>
             </center>
         </form>
-
-        <center>
-            <a><button class="button button2" >Confirm</button></a>
-            <br>
-            <a href="./login.html" ><button class="button button1">Login</button></a>
-        </center>
-        </div>
-
-        <script>
+            <center>
+                <a href="./login.html" ><button class="button button1">Login</button></a>
+            </center>
         
 
-
+        <script>
+            function validateForm() 
+            {
+                
+            }
         </script>
+        </div>
         
     </body>
     
