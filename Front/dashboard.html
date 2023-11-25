@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -119,7 +120,11 @@
     </div>
     <div id="results"></div>
     
+    <script type="text/javascript" src="src/ServerComs.js"></script>
+    
+    
     <script>
+    
     let userBookshelf = []; // Global variable to store bookshelf data
     let searchResults = []; // Global variable to store search results
 
@@ -175,11 +180,32 @@ function displayResults(data) {
     });
 }
 
-function addToBookshelf(index) {
+async function addToBookshelf(index) {
     const bookToAdd = searchResults[index]; // Use the global searchResults array
-    userBookshelf.push(bookToAdd); // Add the selected book to the bookshelf
-    updateBookshelfDisplay(); // Update the bookshelf display
+    const bookTitle = bookToAdd.volumeInfo.title;
+    let isbn = "N/A";
+    if (bookToAdd.volumeInfo.industryIdentifiers) {
+        for (let identifier of bookToAdd.volumeInfo.industryIdentifiers) {
+            if (identifier.type === 'ISBN_10' || identifier.type === 'ISBN_13') {
+                isbn = identifier.identifier;
+                break;
+            }
+        }
+    }
+
+    // Assuming you have the userID and bookListID available
+    const userID = await CreateNewUser('Test4', "testpass");
+    const booklistID = await CreateNewBookList(userID, 'Test BookList');
+
+    // Use the AddBook function from ServerComs.js
+    try {
+        await AddBook(userID, bookListID, isbn);
+        userBookshelf.push(bookToAdd); // Add the selected book to the bookshelf
+    } catch (err) {
+        console.error('Error adding book to bookshelf:', err);
+    }
 }
+
 
 function updateBookshelfDisplay() {
     const bookshelfDiv = document.getElementById('bookshelf');
