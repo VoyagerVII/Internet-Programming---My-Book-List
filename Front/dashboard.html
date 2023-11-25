@@ -199,7 +199,7 @@ async function addToBookshelf(index) {
 
     // Use the AddBook function from ServerComs.js
     try {
-        await AddBook(userID, bookListID, isbn);
+        await AddBook(userID, booklistID, isbn);
         userBookshelf.push(bookToAdd); // Add the selected book to the bookshelf
     } catch (err) {
         console.error('Error adding book to bookshelf:', err);
