@@ -73,7 +73,7 @@ class ORM {
                 username, 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if ( rows.length > 1) { //More than one user.
@@ -103,11 +103,11 @@ class ORM {
                 friendCode, 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if ( rows.length > 1) { //More than one result
-                        console.err('Too many rows returned from FriendCodes table!');
+                        console.error('Too many rows returned from FriendCodes table!');
                         reject('Too many rows returned from FriendCodes table!');
                     }
                     else if (rows.length <= 0) { //No result
@@ -132,11 +132,11 @@ class ORM {
                 usercode, 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if ( rows.length > 1) { //More than one result
-                        console.err('Too many rows returned from FriendCodes table!');
+                        console.error('Too many rows returned from FriendCodes table!');
                         reject('Too many rows returned from FriendCodes table!');
                     }
                     else if (rows.length <= 0) { //No result
@@ -162,11 +162,11 @@ class ORM {
                 userCode, 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if ( rows.length > 1) {
-                        console.err('Too many rows returned from User table!');
+                        console.error('Too many rows returned from User table!');
                         reject('Too many rows returned from User table!');
                     }
                     else if (rows.length <= 0) {
@@ -191,7 +191,7 @@ class ORM {
                 userCode, 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if (rows.length <= 0) {
@@ -218,7 +218,7 @@ class ORM {
                 [userCode, bookListID], 
                 (err, rows) => {
                     if(err) {
-                        console.err(err.message);
+                        console.error(err.message);
                         reject('err.message');
                     }
                     else if (rows.length <= 0) {
