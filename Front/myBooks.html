@@ -22,9 +22,24 @@
               <li><a href="./login.html">Login/Sign Up</a></li>
             </ul>
         </nav>
+
+
+
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the userID from the URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var userID = urlParams.get('userID');
+        
+            //Testing by displaying userID
+            document.getElementById("userIdDisplay").innerHTML = "User ID: " + userID;
+        });
+        </script>
+        
         <div class="body-text"><h1>***Placeholder for now*****</h1></div>
         <center>
-        
+            <div id="userIdDisplay"></div>
         </center>
         
         

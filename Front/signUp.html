@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>My Book List</title>
-        <script src="../Back/APIHandler.js" defer></script>
+        
 	    <link rel="stylesheet" href="./styles/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
@@ -41,7 +41,7 @@
         <div class="body-text" style="margin: auto;"><h1>Sign Up</h1></div>
         <br>
 
-        <form id="signupForm" action="./myBooks.html" method="post" onsubmit="return validateForm()">
+        <form id="signupForm" action="./myBooks.html" onsubmit="return validateForm()">
             <center>
             <label for="usrname">Username:</label><br>
             <input type="text" id="usrname" name="usrname">
@@ -54,6 +54,7 @@
             <label for="pass2">Re-enter Password:</label><br>
             <input type="password" id="pass2" name="pass2"><br>
             <div id="password2Error" class="error"></div>
+            <input type="hidden" name="userID" id="userIDInput" value="">
 
             <button type="submit" class="button button2" >Confirm</button>
             <br>
@@ -63,6 +64,7 @@
                 <a href="./login.html" ><button class="button button1">Login</button></a>
             </center>
         
+        <script type="text/javascript" src="src/ServerComs.js"></script>
 
         <script>
             function validateForm() 
@@ -95,11 +97,11 @@
                     return false;
                 }
 
-                // Call the AddNewUser function with the username and password
-                AddNewUser(username, password);
-
+                // Call the CreateNewUser function with the username and password
+                var userID = CreateNewUser(username, password);
+                document.getElementById("userIDInput").value = userID;
                 // Form is valid
-                return true;  
+                return true; 
         }
         </script>
         </div>
