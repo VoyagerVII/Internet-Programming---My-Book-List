@@ -68,7 +68,7 @@
 
         <script type="text/javascript" src="src/ServerComs.js"></script>
         <script>
-            async function validateForm() 
+             function validateForm() 
             {
                 // Get form inputs
                 var username = document.getElementById("usrname").value;
@@ -91,19 +91,17 @@
                     return false;
                 }
                 
-                try {
-                    // Call IsValidUser function with the username and password
-                    const userID = await IsValidUser(username, password);
+                IsValidUser(username, password)
+                .then(userID => {
                     console.log("Obtained userID:", userID);
-                    document.getElementById("userIDInput").value = String(userID);
-
-                    // Continue with form submission
+                    // Set the value of the hidden input field
+                    document.getElementById("userIDInput").value = userID;
+                    // Navigate to the next page with the userID as a parameter
                     document.getElementById("loginForm").submit();
-                }
-
-                catch(error) {
-                console.error("Error loggin in:", error);
-                };
+                })
+                .catch(error => {
+                    console.error("Error logging in:", error);
+                });
 
                 // Prevent the form from defualt submitting.
                 return false;   

@@ -30,7 +30,8 @@ async function IsValidUser(username, passwordGuess) {
     }
 
     const response = await fetch(`${ServerAddress}/api?action=qValidUser&username=${username}&guess=${passwordGuess}`)
-    return await response.json();
+    const resultJSON = await response.json();
+    return resultJSON.result;
 }
 
 
