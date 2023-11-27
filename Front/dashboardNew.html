@@ -58,11 +58,12 @@
             // Get the userID from the URL parameters
             var urlParams = new URLSearchParams(window.location.search);
             var userID = urlParams.get('userID');
+            var usrname = urlParams.get('usrname');
         
         //click on contact it still passes userID
         var contactLink = document.getElementById('contact-link');
     if (contactLink) {
-        contactLink.href = "./contactlog.html?userID=" + userID;
+        contactLink.href = "./contactlog.html?userID=" + userID + "&usrname=" + usrname;
     }
     })
 
