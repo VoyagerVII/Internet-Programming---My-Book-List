@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Welcome back, $username.</h1>
+        <h1>Welcome back, <span id="username"></span>.</h1>
         <nav>
             <div class="heading">
 
@@ -59,19 +59,15 @@
             var urlParams = new URLSearchParams(window.location.search);
             var userID = urlParams.get('userID');
             var usrname = urlParams.get('usrname');
-        
+
         //click on contact it still passes userID
         var contactLink = document.getElementById('contact-link');
     if (contactLink) {
         contactLink.href = "./contactlog.html?userID=" + userID + "&usrname=" + usrname;
     }
+    //loads the usrname into the username id to be displayed on dashboard
+    document.getElementById('username').textContent = usrname;      
     })
-
-    //CreateNewBookList(userID, "Reading"); 
-    /**
-     * possible create an array to hold the isbn when the add to reading list button is pressed
-     * then push those isbns into the display search function when the reading list menu is opened
-     * */
 
 
 
