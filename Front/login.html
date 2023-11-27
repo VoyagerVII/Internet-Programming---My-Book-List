@@ -32,7 +32,7 @@
             <ul class="nav-links">
               <li><a href="index.html">Home</a></li>
               <li><a href="./contact.html">Contact</a></li>
-              <li><a href="./contact.html">My Books</a></li>
+              <li><a href="./myBooks.html">My Books</a></li>
               <li><a class="active" href="./login.html">Login/Sign Up</a></li>
             </ul>
         </nav>
@@ -68,7 +68,7 @@
 
         <script type="text/javascript" src="src/ServerComs.js"></script>
         <script>
-            function validateForm() 
+            async function validateForm() 
             {
                 // Get form inputs
                 var username = document.getElementById("usrname").value;
@@ -90,15 +90,20 @@
                     document.getElementById("passwordError").innerHTML = "Password cannot be empty";
                     return false;
                 }
-                // Call IsValidUser function with the username and password
-                IsValidUser(username, password)
-                .then((userID) => {
-                    document.getElementById("userIDInput").value = userID;
-                    document.getElementById("loginForm").submit(); // if form valid then submit.
-                })
-                .catch((error) => {
+                
+                try {
+                    // Call IsValidUser function with the username and password
+                    const userID = await IsValidUser(username, password);
+                    console.log("Obtained userID:", userID);
+                    document.getElementById("userIDInput").value = String(userID);
+
+                    // Continue with form submission
+                    document.getElementById("loginForm").submit();
+                }
+
+                catch(error) {
                 console.error("Error loggin in:", error);
-                });
+                };
 
                 // Prevent the form from defualt submitting.
                 return false;   
