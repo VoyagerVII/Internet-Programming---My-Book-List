@@ -16,7 +16,7 @@
 6. Run Backend Server
   - Run from root: `npm run server`
 7. Access website
-  http://localhost:[PORT NUMBER]
+  `http://localhost:[PORT NUMBER]`
 
 
 
