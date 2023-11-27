@@ -128,6 +128,26 @@
     let userBookshelf = []; // Global variable to store bookshelf data
     let searchResults = []; // Global variable to store search results
 
+    
+    let userID;
+    let booklistID;
+    // INITIALIZE TEST
+    async function initializeApp() {
+
+    try {
+        userID = await CreateNewUser('Test4', "testpass");
+        booklistID = await CreateNewBookList(userID, 'Test BookList');
+        // Additional initialization or function calls that depend on these IDs
+    } catch (error) {
+        console.error("Error initializing app:", error);
+        // Handle initialization errors
+    }
+}
+
+// Call this function when appropriate (e.g., when the page loads)
+initializeApp();
+
+
 function searchBook() {
     const query = document.getElementById('bookSearch').value;
     const API_KEY = 'AIzaSyBASUxdn6U-raB77D5B5cp4KH5y90VIAMU'; // Replace with your Google Books API Key
@@ -192,10 +212,6 @@ async function addToBookshelf(index) {
             }
         }
     }
-
-    // Assuming you have the userID and bookListID available
-    const userID = await CreateNewUser('Test4', "testpass");
-    const booklistID = await CreateNewBookList(userID, 'Test BookList');
 
     // Use the AddBook function from ServerComs.js
     try {
