@@ -23,6 +23,7 @@ With this project we plan to give users a quick, and simple way to create, acces
 
 ## Authors
 [Matthew Kastl](https://github.com/matdenkas)
+[Tanner Farr](https://github.com/shadowbladepaladin)
 
 
 
