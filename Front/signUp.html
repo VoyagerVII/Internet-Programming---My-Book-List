@@ -98,10 +98,17 @@
                 }
 
                 // Call the CreateNewUser function with the username and password
-                var userID = CreateNewUser(username, password);
-                document.getElementById("userIDInput").value = userID;
-                // Form is valid
-                return true; 
+                CreateNewUser(username, password)
+                .then((userID) => {
+                    document.getElementById("userIDInput").value = userID;
+                    document.getElementById("signupForm").submit(); // if form valid then submit.
+                })
+                .catch((error) => {
+                console.error("Error creating user:", error);
+                });
+
+                // prevent the form from defualt submitting.
+                return false; 
         }
         </script>
         </div>
