@@ -1,5 +1,8 @@
 # Internet Programming Project
 
+## Description
+With this project we plan to give users a quick, and simple way to create, access and manage their book lists on the web. This will help us gain users by providing a free service with minimal ads, that doesn't push users to buy products. Having an advertisement free interface cements My-Book-List as a cleaner more user friendly alternative to our competitors driving users to us.
+
 ## External Dependancies
 - [NodeJS](https://nodejs.org/en/)
 
