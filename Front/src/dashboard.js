@@ -13,6 +13,9 @@ let searchResults = []; // Global variable to store search results
 
 console.log('Dashboard.js loaded')
 
+//Getting the userID from the URL parameters for following functions
+var urlParams = new URLSearchParams(window.location.search);
+userID = urlParams.get('userID');
 
 /**
  * This function fetches the database for the requested book, and 
@@ -110,7 +113,7 @@ function displayBookshelves(bookshelves) {
     bookshelves.forEach(bookshelf => {
         // Display each bookshelf
         bookshelvesSection.innerHTML += `<div class="bookshelf-item">
-                                            <h3>${bookshelf.name}</h3>
+                                            <h3>${bookshelf.BookListName}</h3>
                                             <!-- Add other bookshelf details as needed -->
                                         </div>`;
     });
