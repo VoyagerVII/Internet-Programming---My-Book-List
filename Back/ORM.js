@@ -74,7 +74,7 @@ class ORM {
                 (err, rows) => {
                     if(err) {
                         console.error(err.message);
-                        reject('err.message');
+                        reject(err.message);
                     }
                     else if ( rows.length > 1) { //More than one user.
                         console.error('Too many rows returned from User table!');
@@ -104,7 +104,7 @@ class ORM {
                 (err, rows) => {
                     if(err) {
                         console.error(err.message);
-                        reject('err.message');
+                        reject(err.message);
                     }
                     else if ( rows.length > 1) { //More than one result
                         console.error('Too many rows returned from FriendCodes table!');
@@ -163,7 +163,7 @@ class ORM {
                 (err, rows) => {
                     if(err) {
                         console.error(err.message);
-                        reject('err.message');
+                        reject(err.message);
                     }
                     else if ( rows.length > 1) {
                         console.error('Too many rows returned from User table!');
@@ -192,7 +192,7 @@ class ORM {
                 (err, rows) => {
                     if(err) {
                         console.error(err.message);
-                        reject('err.message');
+                        reject(err.message);
                     }
                     else if (rows.length <= 0) {
                         return resolve(null);
@@ -219,7 +219,7 @@ class ORM {
                 (err, rows) => {
                     if(err) {
                         console.error(err.message);
-                        reject('err.message');
+                        reject(err.message);
                     }
                     else if (rows.length <= 0) {
                         return resolve(null);
@@ -297,7 +297,8 @@ class ORM {
                 VALUES (?, ?)
                 `,
                 [bookListName, userID],
-                function() {
+                function(err) {
+                    if(err) { console.error(err); }
                     resolve(this.lastID);
                 }
             );
