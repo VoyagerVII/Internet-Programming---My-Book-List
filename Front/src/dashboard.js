@@ -122,6 +122,87 @@ function displayBookshelves(bookshelves) {
     bookshelvesSection.style.display = 'block';
 }
 
+
+// DISPLAY BOOKS FROM A BOOKLIST (DO NOT USE TWICE IN THE SAME INSTANCE)
+async function displayBookDetails(userID, booklistID) {
+    try {
+        let books = await FetchUserBookListBooks(userID, booklistID);
+        
+        if (!Array.isArray(books)) {
+            throw new Error('Expected an array of books');
+        }
+
+        for (let book of books) {
+            // Check if the book object has an 'ISBN' property in uppercase
+            if (!book || !book.ISBN) {
+                console.log('Book object is missing the ISBN property or is undefined', book);
+                continue; // Skip this iteration as we cannot proceed without ISBN
+            }
+            let isbn = book.ISBN;
+            let isbnType = isbn.length === 10 ? 'ISBN-10' : isbn.length === 13 ? 'ISBN-13' : 'Unknown ISBN format';
+
+
+            let bookDetails = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+                .then(response => response.json())
+                .then(data => data.items ? data.items[0] : null)
+                .catch(err => console.error('Error fetching book details:', err));
+
+            // Display book details
+            if (bookDetails) {
+                let bookInfo = bookDetails.volumeInfo;
+                let title = bookInfo.title;
+                let authors = bookInfo.authors ? bookInfo.authors.join(', ') : 'Unknown';
+                let description = bookInfo.description ? bookInfo.description : 'No description available';
+                let bookCover = bookInfo.imageLinks && bookInfo.imageLinks.thumbnail ? bookInfo.imageLinks.thumbnail : 'default-cover.jpg';
+                let previewLink = bookInfo.previewLink ? bookInfo.previewLink : '#';
+
+                // Now, update the HTML content with these details
+                let resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML += `<div class="book-item">
+                                            <img src="${bookCover}" alt="${title} cover" width="100">
+                                            <h3>${title}</h3>
+                                            <p>${authors}</p>
+                                            <p>${isbnType}: ${isbn}</p>
+                                            <a href="${previewLink}" target="_blank">Preview Book</a>
+                                            </div>`;
+            } else {
+                console.log(`No details found for ISBN: ${isbn}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error displaying book details:', error);
+    }
+}
+
+// ADD TO BOOKSHELF FUNCTION
+async function addToBookshelf(index) {
+    const bookToAdd = searchResults[index]; // Use the global searchResults array
+    const bookTitle = bookToAdd.volumeInfo.title;
+    let isbn10 = "N/A";
+    let isbn13 = "N/A";
+
+    if (bookToAdd.volumeInfo.industryIdentifiers) {
+        for (let identifier of bookToAdd.volumeInfo.industryIdentifiers) {
+            if (identifier.type === 'ISBN_10') {
+                isbn10 = identifier.identifier;
+            } else if (identifier.type === 'ISBN_13') {
+                isbn13 = identifier.identifier;
+            }
+        }
+    }
+
+    // Prefer ISBN-10 if available, otherwise use ISBN-13
+    const isbn = isbn10 !== "N/A" ? isbn10 : isbn13;
+
+    // Use the AddBook function from ServerComs.js
+    try {
+        await AddBook(userID, booklistID, isbn);
+        userBookshelf.push(bookToAdd); // Add the selected book to the bookshelf
+    } catch (err) {
+        console.error('Error adding book to bookshelf:', err);
+    }
+}
+
 /**
  * This Function will clear the screen and show the section chosen with by the 
  * sectionID
