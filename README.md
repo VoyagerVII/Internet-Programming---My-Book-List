@@ -18,6 +18,9 @@
 7. Access website
   `http://localhost:[PORT NUMBER]`
 
+## Authors
+[Matthew Kastl](https://github.com/matdenkas)
+
 
 
 
