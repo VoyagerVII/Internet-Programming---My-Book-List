@@ -52,7 +52,11 @@
     <script src="http://localhost:8000/src/dashboard.js"></script>         <!--Link to the dashboard driver -->
 </body>
 <script>
-    const userID = CreateNewUser('Test', "password");      //for testing, until the userID is passed from login
+    document.addEventListener("DOMContentLoaded", async function () {
+            // Get the userID from the URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var userID = urlParams.get('userID');
+        })
 
     CreateNewBookList(userID, "Reading");
 </script>
