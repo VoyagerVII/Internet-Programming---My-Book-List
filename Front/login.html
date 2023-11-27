@@ -44,6 +44,7 @@
         
         <form id="loginForm" action="./dashboardNew.html" onsubmit="return validateForm()">
             <center>
+            <div id="guessError" class="error"></div>
             <label for="usrname">Username:</label><br>
             <input type="text" id="usrname" name="usrname">
             <div id="usernameError" class="error"></div>
@@ -51,7 +52,6 @@
             <label for="pass">Password:</label><br>
             <input type="password" id="pass" name="pass">
             <div id="passwordError" class="error"></div>
-            <div id="guessError" class="error"></div>
             <input type="hidden" name="userID" id="userIDInput" value="">
 
 
@@ -93,11 +93,17 @@
                 
                 IsValidUser(username, password)
                 .then(userID => {
+                    if (userID === null) {
+                // Display error message for incorrect username or password
+                document.getElementById("guessError").innerHTML = "Incorrect username or password!";
+                }
+                else{
                     console.log("Obtained userID:", userID);
                     // Set the value of the hidden input field
                     document.getElementById("userIDInput").value = userID;
                     // Navigate to the next page with the userID as a parameter
                     document.getElementById("loginForm").submit();
+                }
                 })
                 .catch(error => {
                     console.error("Error logging in:", error);
