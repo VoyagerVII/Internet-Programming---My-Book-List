@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffedba;
+}
+
+header {
+    background-color: #C7AE6E;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #000;
+    font-size: x-large;
+}
+
+.heading h4 {
+    color: white;
+    margin: 0;
+}
+
+.nav-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+    background-color: #4caf50;
+}
+
+.menu-options {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    gap: 20px;
+    background-color: rgb(59, 124, 70);
+    padding: 10px;
+}
+
+.menu-options a {
+    color: whitesmoke;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.menu-options a:hover {
+    background-color: #4caf50;
+}
+
+#results {
+display: grid;
+grid-template-columns: repeat(5, 1fr); /* Creates 5 columns */
+gap: 20px; /* Space between grid items */
+padding: 20px;
+}
+
+.book-item {
+background-color: #fff;
+padding: 10px;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+
+.dashboard-hide {
+    display: none;
+}
+
+#reading-section {
+    display: block;     /*used to show this dashboard section initially */
+}

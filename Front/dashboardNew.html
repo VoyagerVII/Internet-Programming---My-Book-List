@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book List - Dashboard</title>
+    <link rel="stylesheet" href="./styles/stylesDashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome back, $username.</h1>
+        <nav>
+            <div class="heading">
+                <h4>MyBookList</h4>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a class="active" href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <ul class="menu-options">
+        <li><a href="#" onclick="showSection('reading-section'), FetchUserBookListBooks(userID, 'Reading')">Reading Now</a></li>
+        <li><a href="#" onclick="showSection('bookshelves-section'); showBookshelves(userID)">Bookshelves</a></li>
+        <li><a href="#" onclick="showSection('add-bookshelves-section')">Add Bookshelf</a></li>
+        <li><a href="#" onclick="showSection('search-section')">Search</a></li>
+    </ul>
+
+
+    <div id="reading-section" class="dashboard-hide">
+    </div>
+
+    <div id="bookshelves-section" class="dashboard-hide">
+        
+    </div>
+
+    <div id="add-bookshelves-section" class="dashboard-hide">
+        <input type="text" id="bookListName" placeholder="Enter book list name">
+        <button onclick="CreateNewBookList(userID, bookListName)">Add Booklist</button>
+    </div>
+
+    <div id="search-section" class="dashboard-hide">
+        <input type="text" id="bookSearch" placeholder="Search for a book...">
+        <button onclick="searchBook()">Search</button>
+    </div>
+    <div id="results"></div>
+    
+    <script src="http://localhost:8000/src/ServerComs.js"></script>        <!--Link to the dashboard driver -->
+    <script src="http://localhost:8000/src/dashboard.js"></script>         <!--Link to the dashboard driver -->
+</body>
+<script>
+    const userID = CreateNewUser('Test', "password");      //for testing, until the userID is passed from login
+
+    CreateNewBookList(userID, "Reading");
+</script>
+
+</html>
