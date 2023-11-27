@@ -16,7 +16,7 @@
 
             <ul class="nav-links">
                 <li><a class="active" href="./dashboardNew.html">My Dashboard</a></li>
-                <li><a href="./contactlog.html">Contact</a></li>
+                <li><a id="contact-link" href="./contactlog.html">Contact</a></li>
                 <li><a href="./login.html">Logout</a></li>
             </ul>
         </nav>
@@ -58,7 +58,13 @@
             // Get the userID from the URL parameters
             var urlParams = new URLSearchParams(window.location.search);
             var userID = urlParams.get('userID');
-        })
+        
+        //click on contact it still passes userID
+        var contactLink = document.getElementById('contact-link');
+    if (contactLink) {
+        contactLink.href = "./contactlog.html?userID=" + userID;
+    }
+    })
 
     //CreateNewBookList(userID, "Reading"); 
     /**
