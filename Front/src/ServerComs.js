@@ -157,9 +157,3 @@ async function FetchFriendCode(userID) {
     const resultJSON = await response.json();
     return resultJSON.result;
 }
-
-
-
-async function test() {
-    console.log(await CreateNewUser('Test', 'test'));
-}

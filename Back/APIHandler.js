@@ -141,7 +141,7 @@ class APIHandler {
 
         //Query the user data via username
         let user = await this.orm.getUserByUsername(username);
-
+        if (user === -1) { return null; }
         //Check if the password guess is valid.
         let isValidUser = await this.salterAndHasher.ValidateHash(guess, user.hash);
         if(isValidUser) {
