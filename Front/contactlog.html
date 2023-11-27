@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book List - Dashboard</title>
+    <link rel="stylesheet" href="./styles/stylesDashboard.css">
+</head>
+<body>
+    <header>
+        <h1>MyBookList</h1>
+        <nav>
+            <div class="heading">
+                <h4>MyBookList</h4>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="./dashboardNew.html">My Dashboard</a></li>
+                <li><a class="active" href="./contactlog.html">Contact</a></li>
+                <li><a href="./login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="body-text"><h1>Questions? Need Support?</h1></div>
+
+        <center>
+        <p style="font-size: 30px;">Contact us with the information provided below!</p>
+        <br>
+        <br>
+        <p style="font-size: 25px;">
+            <b>Phone:</b> (111)111-1111
+            <br>
+            <b>Email:</b> example@gmail.com
+            <br>
+            <br>
+            <b>Thank You!</b>
+        </p>
+        </center>
+
+    
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+            // Get the userID from the URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var userID = urlParams.get('userID');
+        })
+</script>
+
+</html>
