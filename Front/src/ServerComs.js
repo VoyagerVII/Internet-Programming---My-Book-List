@@ -163,4 +163,3 @@ async function FetchFriendCode(userID) {
 async function test() {
     console.log(await CreateNewUser('Test', 'test'));
 }
-test();
