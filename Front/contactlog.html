@@ -17,7 +17,7 @@
             </div>
 
             <ul class="nav-links">
-                <li><a href="./dashboardNew.html">My Dashboard</a></li>
+                <li><a id="dashboard-link" href="./dashboardNew.html">My Dashboard</a></li>
                 <li><a class="active" href="./contactlog.html">Contact</a></li>
                 <li><a href="./login.html">Logout</a></li>
             </ul>
@@ -49,6 +49,14 @@
             // Get the userID from the URL parameters
             var urlParams = new URLSearchParams(window.location.search);
             var userID = urlParams.get('userID');
+            var usrname = urlParams.get('usrname');
+
+            // when clicking dashboard sends over userID and usrname in url
+            var dashboardLink = document.getElementById('dashboard-link');
+            if (dashboardLink) {
+                dashboardLink.href = "./dashboardNew.html?userID=" + userID + "&usrname=" + usrname;
+            }
+
         })
 </script>
 
