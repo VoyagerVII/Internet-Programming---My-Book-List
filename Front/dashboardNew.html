@@ -23,7 +23,7 @@
     </header>
     
     <ul class="menu-options">
-        <li><a href="#" onclick="showSection('reading-section'), FetchUserBookListBooks(userID, 'Reading')">Reading Now</a></li>
+        <li><a href="#" onclick="showSection('reading-section'), FetchUserBookListBooks(userID, 'Reading'), displayBookDetails(userID,'Reading')">Reading Now</a></li>
         <li><a href="#" onclick="showSection('bookshelves-section'); showBookshelves(userID)">Bookshelves</a></li>
         <li><a href="#" onclick="showSection('add-bookshelves-section')">Add Bookshelf</a></li>
         <li><a href="#" onclick="showSection('search-section')">Search</a></li>
@@ -31,6 +31,8 @@
 
 
     <div id="reading-section" class="dashboard-hide">
+
+
     </div>
 
     <div id="bookshelves-section" class="dashboard-hide">
@@ -61,7 +63,11 @@
     //CreateNewBookList(userID, "Reading"); 
     /**
      * possible create an array to hold the isbn when the add to reading list button is pressed
-     * then push those isbns into the display search function when the reading list menu is opened */
+     * then push those isbns into the display search function when the reading list menu is opened
+     * */
+
+
+
 </script>
 
 </html>
