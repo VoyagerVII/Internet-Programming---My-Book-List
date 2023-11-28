@@ -68,6 +68,9 @@ function displayResults(data) {
     // Get preview link
     const previewLink = item.volumeInfo.previewLink;
 
+    // POPULATE DROP-DOWN MENU
+    PopulateBooklistDropdown(userID);
+
     resultsDiv.innerHTML += `<div class="book-item">
                                 <img src="${bookCover}" alt="${bookTitle} cover" width="100">
                                 <h3>${bookTitle}</h3>
@@ -114,10 +117,10 @@ function displayBookshelves(bookshelves) {
         // Display each bookshelf
         bookshelvesSection.innerHTML += `<div class="bookshelf-item">
                                             <h3>${bookshelf.BookListName}</h3>
-                                            <!-- Add other bookshelf details as needed -->
                                         </div>`;
     });
 
+    displayBookDetails(userID, bookshelf.BookListName);
     // Show the "Bookshelves" section
     bookshelvesSection.style.display = 'block';
 }
@@ -174,6 +177,18 @@ async function displayBookDetails(userID, booklistID) {
     }
 }
 
+// POPULATES DROP-DOWN MENU FOR OPTIONS
+async function PopulateBooklistDropdown(userID) {
+    const booklists = await FetchUserBookLists(userID);
+    const dropdown = document.getElementById('booklistDropdown');
+    booklists.forEach((booklist) => {
+        const option = document.createElement('option');
+        option.value = booklist.BooklistID;
+        option.textContent = booklist.Name; // Assuming each booklist has a 'Name' property
+        dropdown.appendChild(option);
+    });
+}
+
 // ADD TO BOOKSHELF FUNCTION
 async function addToBookshelf(index) {
     const bookToAdd = searchResults[index]; // Use the global searchResults array
@@ -193,6 +208,9 @@ async function addToBookshelf(index) {
 
     // Prefer ISBN-10 if available, otherwise use ISBN-13
     const isbn = isbn10 !== "N/A" ? isbn10 : isbn13;
+
+    // GETS BOOKLIST ID FROM DROP-LIST
+    const booklistID = document.getElementById('booklistDropdown').value;
 
     // Use the AddBook function from ServerComs.js
     try {
