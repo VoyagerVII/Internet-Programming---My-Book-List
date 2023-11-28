@@ -45,45 +45,51 @@ function displayResults(data) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = ''; // clear previous results
 
-    data.items.forEach(item => {
-    const bookTitle = item.volumeInfo.title;
-    const bookAuthors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
-
-    // Get book cover image
-    const bookCover = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'path_to_default_image.jpg';
-
-    // Get ISBN
-        //Might make it so no repeats of the same book [i think diff types = diff isbn]
-    let isbn10 = "N/A";
-    if (item.volumeInfo.industryIdentifiers) 
-    {
-        for (let identifier of item.volumeInfo.industryIdentifiers) {
-            if (identifier.type === 'ISBN_10') {
-                isbn10 = identifier.identifier;
-                break;
-            }
-        }
-    }
-
-    // Get preview link
-    const previewLink = item.volumeInfo.previewLink;
 
     // POPULATE DROP-DOWN MENU
     PopulateBooklistDropdown(userID);
+    data.items.forEach(item => {
+        const bookTitle = item.volumeInfo.title;
+        const bookAuthors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
 
-    resultsDiv.innerHTML += `<div class="book-item">
-                                <img src="${bookCover}" alt="${bookTitle} cover" width="100">
-                                <h3>${bookTitle}</h3>
-                                <p>${bookAuthors}</p>
-                                <p>ISBN-10: ${isbn10}</p>
-                                <a href="${previewLink}" target="_blank">Preview Book</a>
-                                <button onclick="AddBook(userID, booklistID, '${isbn10}')">Add to Bookshelf</button>
-                                <button onclick="AddBook(userID, 'Reading', '${isbn10}')">Add to Reading List</button>
-                            </div>`;
-    });
+        // Get book cover image
+        const bookCover = item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'path_to_default_image.jpg';
 
+        // Get ISBN
+            //Might make it so no repeats of the same book [i think diff types = diff isbn]
+        let isbn10 = "N/A";
+        if (item.volumeInfo.industryIdentifiers) 
+        {
+            for (let identifier of item.volumeInfo.industryIdentifiers) {
+                if (identifier.type === 'ISBN_10') {
+                    isbn10 = identifier.identifier;
+                    break;
+                }
+            }
+        }
+
+        // Get preview link
+        const previewLink = item.volumeInfo.previewLink;
+
+
+        resultsDiv.innerHTML += `<div class="book-item">
+                                    <img src="${bookCover}" alt="${bookTitle} cover" width="100">
+                                    <h3>${bookTitle}</h3>
+                                    <p>${bookAuthors}</p>
+                                    <p>ISBN-10: ${isbn10}</p>
+                                    <a href="${previewLink}" target="_blank">Preview Book</a>
+                                    <button onclick="DynamicBooklistAdd(userID, '${isbn10}');">Add to Bookshelf</button>
+                                    <button onclick="AddBook(userID, 'Reading', '${isbn10}')">Add to Reading List</button>
+                                </div>`;
+    }); 
         // Show the search results
     resultsDiv.style.display = 'grid'
+}
+
+function DynamicBooklistAdd(userID, ISBN){
+    const selector = document.getElementById('slcBookLists');
+    const value = selector.options[selector.selectedIndex].value;
+    AddBook(userID, value, ISBN)
 }
 
 /**
@@ -180,11 +186,12 @@ async function displayBookDetails(userID, booklistID) {
 // POPULATES DROP-DOWN MENU FOR OPTIONS
 async function PopulateBooklistDropdown(userID) {
     const booklists = await FetchUserBookLists(userID);
-    const dropdown = document.getElementById('booklistDropdown');
+    const dropdown = document.getElementById('slcBookLists');
+    dropdown.innerHTML = '';
     booklists.forEach((booklist) => {
         const option = document.createElement('option');
-        option.value = booklist.BooklistID;
-        option.textContent = booklist.Name; // Assuming each booklist has a 'Name' property
+        option.value = booklist.ID;
+        option.textContent = booklist.BookListName; // Assuming each booklist has a 'Name' property
         dropdown.appendChild(option);
     });
 }
