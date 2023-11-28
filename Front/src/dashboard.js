@@ -219,7 +219,7 @@ function showSection(sectionID)
 
     // Hide the search results
     var resultsDiv = document.getElementById('results');
-    resultsDiv.style.display = 'none';
+    resultsDiv.innerHTML = '';
 
 
     //Show the selected section
