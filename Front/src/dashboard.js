@@ -123,17 +123,18 @@ function displayBookshelves(bookshelves) {
         // Display each bookshelf
         bookshelvesSection.innerHTML += `<div class="bookshelf-item">
                                             <h3>${bookshelf.BookListName}</h3>
+                                            <div id=${bookshelf.BookListName}></div>
                                         </div>`;
+        displayBookDetails(userID, bookshelf.BookListName, bookshelf.BookListName);
     });
 
-    displayBookDetails(userID, bookshelf.BookListName);
     // Show the "Bookshelves" section
     bookshelvesSection.style.display = 'block';
 }
 
 
 // DISPLAY BOOKS FROM A BOOKLIST (DO NOT USE TWICE IN THE SAME INSTANCE)
-async function displayBookDetails(userID, booklistID) {
+async function displayBookDetails(userID, booklistID, target='results') {
     try {
         let books = await FetchUserBookListBooks(userID, booklistID);
         
@@ -166,7 +167,7 @@ async function displayBookDetails(userID, booklistID) {
                 let previewLink = bookInfo.previewLink ? bookInfo.previewLink : '#';
 
                 // Now, update the HTML content with these details
-                let resultsDiv = document.getElementById('results');
+                let resultsDiv = document.getElementById(target);
                 resultsDiv.innerHTML += `<div class="book-item">
                                             <img src="${bookCover}" alt="${title} cover" width="100">
                                             <h3>${title}</h3>
