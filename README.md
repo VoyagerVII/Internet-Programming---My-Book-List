@@ -28,6 +28,8 @@ With this project we plan to give users a quick, and simple way to create, acces
 
 [Trent Fowler](https://github.com/trentfowler01)
 
+[Jacob Gonzalez](https://github.com/VoyagerVII)
+
 
 
 
