@@ -101,6 +101,7 @@
                 .then((userID) => {
                     document.getElementById("userIDInput").value = userID;
                     document.getElementById("signupForm").submit(); // if form valid then submit.
+                    CreateNewBookList(userID, 'Reading'); // Auto make Reading List for new user.
                 })
                 .catch((error) => {
                 console.error("Error creating user:", error);
