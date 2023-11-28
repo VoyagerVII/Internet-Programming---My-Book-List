@@ -74,8 +74,8 @@ function displayResults(data) {
                                 <p>${bookAuthors}</p>
                                 <p>ISBN-10: ${isbn10}</p>
                                 <a href="${previewLink}" target="_blank">Preview Book</a>
-                                <button onclick="AddBook(userID, booklistID, ${isbn10})">Add to Bookshelf</button>
-                                <button onclick="AddBook(userID, 'Reading', ${isbn10})">Add to Reading List</button>
+                                <button onclick="AddBook(userID, booklistID, '${isbn10}')">Add to Bookshelf</button>
+                                <button onclick="AddBook(userID, 'Reading', '${isbn10}')">Add to Reading List</button>
                             </div>`;
     });
 
